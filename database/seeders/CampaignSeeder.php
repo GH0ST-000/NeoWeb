@@ -3,27 +3,45 @@
 namespace Database\Seeders;
 
 use App\Models\Campaign;
+use App\Models\Participation;
 use App\Models\Step;
 use App\Models\StepField;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
 class CampaignSeeder extends Seeder
 {
 
+
+
     public function run(): void
     {
-        $campaign = Campaign::create(['title' => 'Sample Campaign', 'end_date' => now()->addDays(30), 'uuid' => Str::random()]);
+        $campaign = Campaign::factory()->create([
+            'title' => 'example campaign',
+            'uuid' => Str::random(),
+            'end_date' => now()->addDays(30)
+        ]);
 
-        $step1 = Step::create(['campaign_id' => $campaign->id, 'title' => 'Step 1', 'order_num' => 1, 'fileName' => 'step1.blade.php']);
-        $step2 = Step::create(['campaign_id' => $campaign->id, 'title' => 'Step 2', 'order_num' => 2, 'fileName' => 'step2.blade.php']);
+        Participation::factory()->create([
+            'campaign_id' => $campaign->id,
+            'email'=>'test@gmail.com',
+            'data'=>json_encode(['position_one'=>'some data']),
+        ]);
 
-        StepField::create(['step_id' => $step1->id, 'input' => 'email']);
-        StepField::create(['step_id' => $step1->id, 'input' => 'name']);
-        StepField::create(['step_id' => $step1->id, 'input' => 'date_of_birth']);
+        $step_one = Step::factory()->create([
+            'campaign_id' => $campaign->id,
+            'filename'   => 'step1',
 
-        StepField::create(['step_id' => $step2->id, 'input' => 'phone']);
-        StepField::create(['step_id' => $step2->id, 'input' => 'address']);
+        ]);
+        StepField::factory()->create([
+            'step_id' => $step_one->id,
+            'field_name'   => 'email',
+
+        ]);
+
+         Step::factory()->create([
+            'campaign_id' => $campaign->id,
+            'filename'  => 'step2'
+        ]);
     }
 }

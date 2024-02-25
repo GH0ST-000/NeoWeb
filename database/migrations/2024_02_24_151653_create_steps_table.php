@@ -11,10 +11,9 @@ return new class extends Migration
     {
         Schema::create('steps', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('campaign_id')->constrained();
-            $table->string('title');
-            $table->integer('order_num');
-            $table->string('fileName');
+            $table->unsignedBigInteger('campaign_id');
+            $table->foreign('campaign_id')->references('id')->on('campaigns');
+            $table->string('filename');
             $table->timestamps();
         });
     }

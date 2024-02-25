@@ -11,9 +11,9 @@ return new class extends Migration
     {
         Schema::create('campaigns', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->date('end_date');
             $table->string('uuid')->unique();
+            $table->string('title');
+            $table->timestamp('end_date');
             $table->timestamps();
         });
     }

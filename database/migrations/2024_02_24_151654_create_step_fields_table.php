@@ -11,8 +11,10 @@ return new class extends Migration
     {
         Schema::create('step_fields', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('step_id')->constrained();
-            $table->string('input');
+            $table->unsignedBigInteger('step_id');
+            $table->foreign('step_id')->references('id')->on('steps');
+            $table->string('field_name');
+            $table->integer('order_num')->nullable();
             $table->timestamps();
         });
     }

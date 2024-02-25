@@ -11,7 +11,8 @@ return new class extends Migration
     {
         Schema::create('participations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('campaign_id')->constrained();
+            $table->unsignedBigInteger('campaign_id');
+            $table->foreign('campaign_id')->references('id')->on('campaigns');
             $table->string('email');
             $table->json('data')->nullable();
             $table->timestamps();
