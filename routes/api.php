@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::controller(CampaignFrontendController::class)->group(function (){
-    Route::get('/campaign/{campaignUuid}','display');
-    Route::post('/campaign/{campaignUuid}','submit');
+    Route::get('/campaign/{campaignUuid}','display')->name('campaign.display');
+    Route::post('/campaign/{campaignUuid}','submit')->name('campaign.submit');
 });
 
 

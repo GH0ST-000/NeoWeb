@@ -30,7 +30,8 @@ class CampaignSeeder extends Seeder
 
         $step_one = Step::factory()->create([
             'campaign_id' => $campaign->id,
-            'filename'   => 'step1',
+            'filename'   => 'step',
+            'order_num'=>1
 
         ]);
         StepField::factory()->create([
@@ -41,7 +42,8 @@ class CampaignSeeder extends Seeder
 
          Step::factory()->create([
             'campaign_id' => $campaign->id,
-            'filename'  => 'step2'
+            'filename'  => 'step',
+             'order_num'=>1
         ]);
     }
 }

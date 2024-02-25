@@ -14,7 +14,6 @@ return new class extends Migration
             $table->unsignedBigInteger('step_id');
             $table->foreign('step_id')->references('id')->on('steps');
             $table->string('field_name');
-            $table->integer('order_num')->nullable();
             $table->timestamps();
         });
     }
