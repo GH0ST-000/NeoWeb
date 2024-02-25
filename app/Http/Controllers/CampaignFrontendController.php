@@ -13,26 +13,27 @@ use Illuminate\Validation\Rule;
 class CampaignFrontendController extends Controller
 {
 
-    public function display(Request $request, Campaign $campaignUuid)
+    public function display(Request $request, Campaign $campaignUuid): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|string|\Illuminate\Contracts\Foundation\Application
     {
         $campaign = $campaignUuid;
 
         if ($campaign->end_date < now()) {
             return $this->showExpiredCampaign();
         }
-        $request->session()->put('current_step',0);
+//        $request->session()->put('current_step',1);
         $currentStep = $request->session()->get('current_step', 1);
         $step = $campaign->steps()->where('order_num', $currentStep)->first();
         if (!$step) {
             return $this->showExpiredCampaign();
         }
         return view($step->filename, ['campaignTitle' => $campaign->title]);
-
     }
 
 
-    public function submit(Request $request, Campaign $campaign): \Illuminate\Http\RedirectResponse
+    public function submit(Request $request, Campaign $campaignUuid)
     {
+        $campaign = $campaignUuid;
+
         $currentStep = $request->session()->get('current_step', 1);
 
         $step = Step::whereHas('campaign', function ($query) use ($campaign) {
@@ -60,23 +61,28 @@ class CampaignFrontendController extends Controller
     }
 
 
-    private function showExpiredCampaign()
+    private function showExpiredCampaign(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        return 'expired';
+        return view('expired');
     }
 
 
-    protected function generateRules(array $fields): array
+    public function generateRules(array $rules)
     {
-        $rules = array_fill_keys($fields, 'required');
-        if (in_array('date_of_birth', $fields, true)) {
-            $rules['date_of_birth'] = [
-                'required',
-                'date',
-                'before:' . Carbon::now()->subYears(18)->toDateString(),
-            ];
+        $generatedRules = [];
+
+        foreach ($rules as $rule) {
+            if ($rule === 'date_of_birth') {
+                $generatedRules[$rule] = [
+                    'required',
+                    'date',
+                    'before:' . \Illuminate\Support\Carbon::now()->subYears(18)->toDateString(),
+                ];
+            } else {
+                $generatedRules[$rule] = 'required';
+            }
         }
 
-        return $rules;
+        return $generatedRules;
     }
 }

@@ -11,7 +11,7 @@ class Step extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'title', 'campaign_id', 'order_num', 'fileName',
+        'title', 'campaign_id', 'order_num', 'filename',
     ];
 
     public function campaign(): \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -14,6 +14,7 @@ return new class extends Migration
             $table->unsignedBigInteger('campaign_id');
             $table->foreign('campaign_id')->references('id')->on('campaigns');
             $table->string('filename');
+            $table->integer('order_num')->nullable();
             $table->timestamps();
         });
     }
