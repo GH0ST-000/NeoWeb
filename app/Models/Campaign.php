@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Campaign extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'title', 'end_date', 'uuid',
     ];
@@ -14,13 +16,18 @@ class Campaign extends Model
         'end_date' => 'date',
     ];
 
-    public function steps(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function steps()
     {
         return $this->hasMany(Step::class);
     }
 
-    public function participations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function participations()
     {
         return $this->hasMany(Participation::class);
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
     }
 }

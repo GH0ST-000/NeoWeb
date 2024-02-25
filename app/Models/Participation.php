@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Participation extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'email', 'campaign_id', 'data',
     ];
